@@ -11,7 +11,7 @@ public class TqsStack<T> {
     }
 
     public T pop() {
-        return null;
+        return stack.pop();
     }
     
     public int size() {
@@ -19,11 +19,11 @@ public class TqsStack<T> {
     }
 
     public T peek() {
-        return null;
+        return stack.element();
     }
 
     public void push(T element) {
-
+        stack.push(element);
     }
 
     public boolean isEmpty() {
