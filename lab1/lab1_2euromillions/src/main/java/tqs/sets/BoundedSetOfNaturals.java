@@ -1,8 +1,12 @@
 package tqs.sets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * offers a bounded set data structure, thus complying with:
@@ -64,8 +68,11 @@ public class BoundedSetOfNaturals implements Iterable<Integer> {
     }
 
 
-    //TODO implement the intersect logic
     public boolean intersects(BoundedSetOfNaturals subset) {
+        for (Integer element : subset.collection) {
+            if (this.contains(element))
+                return true;
+        }
         return false;
     }
 
