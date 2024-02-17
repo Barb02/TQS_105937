@@ -31,15 +31,15 @@ public class Dip {
     public Dip(int[] arrayOfNumbers, int[] arrayOfStarts) {
         this();
 
-       /* code to check ranges
-       if( ! Arrays.stream(arrayOfNumbers).allMatch( nr -> nr >= 1 && nr <= NUMBERS_RANGE_MAX) ){
+       // code to check ranges
+        if( ! Arrays.stream(arrayOfNumbers).allMatch( nr -> nr >= 1 && nr <= NUMBERS_RANGE_MAX) ){
             throw new IllegalArgumentException("numbers set are outside the expected range!");
         }
 
         if( ! Arrays.stream(arrayOfStarts).allMatch(nr -> nr >= 1 && nr <= STARS_RANGE_MAX) ){
             throw new IllegalArgumentException("numbers set are outside the expected range!");
         }
-        */
+       
 
         if (NUMBERS_REQUIRED == arrayOfNumbers.length && STARS_REQUIRED == arrayOfStarts.length) {
             numbers.add(arrayOfNumbers);

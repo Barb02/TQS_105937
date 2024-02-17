@@ -17,7 +17,7 @@ public class UnitTest {
     }
 
     @AfterEach
-    public void teardwon() {
+    public void tearDown() {
         stack = null;
     }
 
