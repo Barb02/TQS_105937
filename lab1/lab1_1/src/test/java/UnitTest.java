@@ -2,6 +2,7 @@ import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import com.pt.ua.TqsStack;
@@ -13,6 +14,11 @@ public class UnitTest {
     @BeforeEach
     public void setUp() {
         stack = new TqsStack<Integer>();
+    }
+
+    @AfterEach
+    public void teardwon() {
+        stack = null;
     }
 
     @Test
