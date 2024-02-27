@@ -18,4 +18,4 @@ Motivos: Latência e custos de usar logo a api externa pros testes
 
 Depois: teste de integração, usando a api externa de fato. 
 
-https://www.mapquestapi.com/geocoding/v1/reverse?key=zrg8ntcCCcUuWflmDVKBemPVJfiVy6kg&location=-361,-361
+`mvn install failsafe:integration-test` para fazer o teste de integração, falha se n tiver net.
