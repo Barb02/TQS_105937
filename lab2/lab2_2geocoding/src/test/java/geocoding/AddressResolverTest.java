@@ -53,11 +53,7 @@ class AddressResolverTest {
         uriBuilder.addParameter("thumbMaps", "false");
         String uri = uriBuilder.build().toString();
 
-        // parse do JSON como String
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("returnOK.json");
-        byte[] bytes = inputStream.readAllBytes();
-        String jsonString = new String(bytes, StandardCharsets.UTF_8);
+        String jsonString = "{ \"info\": { \"statuscode\": 0, \"copyright\": { \"text\": \"© 2024 MapQuest, Inc.\", \"imageUrl\": \"https://api.mqcdn.com/res/mqlogo.gif\", \"imageAltText\": \"© 2024 MapQuest, Inc.\" }, \"messages\": [] }, \"options\": { \"maxResults\": 1, \"thumbMaps\": false, \"ignoreLatLngInput\": false }, \"results\": [ { \"providedLocation\": { \"latLng\": { \"lat\": 40.63436, \"lng\": -8.65616 } }, \"locations\": [ { \"street\": \"Avenida da Universidade\", \"adminArea6\": \"\", \"adminArea6Type\": \"Neighborhood\", \"adminArea5\": \"Aveiro\", \"adminArea5Type\": \"City\", \"adminArea4\": \"Aveiro\", \"adminArea4Type\": \"County\", \"adminArea3\": \"\", \"adminArea3Type\": \"State\", \"adminArea1\": \"PT\", \"adminArea1Type\": \"Country\", \"postalCode\": \"3810-489\", \"geocodeQualityCode\": \"L1AAA\", \"geocodeQuality\": \"ADDRESS\", \"dragPoint\": false, \"sideOfStreet\": \"R\", \"linkId\": \"0\", \"unknownInput\": \"\", \"type\": \"s\", \"latLng\": { \"lat\": 40.63436, \"lng\": -8.65616 }, \"displayLatLng\": { \"lat\": 40.63436, \"lng\": -8.65616 }, \"mapUrl\": \"https://www.mapquestapi.com/staticmap/v4/getmap?key=KEY&type=map&size=225,160&pois=purple-1,30.3334721,-81.4704483,0,0,|&center=30.3334721,-81.4704483&zoom=15&rand=-553163060\" } ] } ] }";
 
         when(client.doHttpGet(uri)).thenReturn(jsonString);
 
@@ -82,11 +78,7 @@ class AddressResolverTest {
         uriBuilder.addParameter("thumbMaps", "false");
         String uri = uriBuilder.build().toString();
 
-        // parse do JSON como String
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("returnNOK.json");
-        byte[] bytes = inputStream.readAllBytes();
-        String jsonString = new String(bytes, StandardCharsets.UTF_8);
+        String jsonString = "{ \"info\": { \"statuscode\": 400, \"copyright\": { \"text\": \"© 2024 MapQuest, Inc.\", \"imageUrl\": \"http://api.mqcdn.com/res/mqlogo.gif\", \"imageAltText\": \"© 2024 MapQuest, Inc.\" }, \"messages\": [ \"Illegal argument from request: Invalid LatLng specified.\" ] }, \"options\": { \"maxResults\": 1, \"ignoreLatLngInput\": false }, \"results\": [ { \"providedLocation\": {}, \"locations\": [] } ] }";
 
         when(client.doHttpGet(uri)).thenReturn(jsonString);
         
