@@ -3,7 +3,7 @@
 
 # 1.2
 
-##Correr testes um a um:
+## Correr testes um a um:
 
 https://www.baeldung.com/maven-run-single-test
 
@@ -19,3 +19,4 @@ Motivos: Latência e custos de usar logo a api externa pros testes
 Depois: teste de integração, usando a api externa de fato. 
 
 `mvn install failsafe:integration-test` para fazer o teste de integração, falha se n tiver net.
+
