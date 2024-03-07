@@ -20,15 +20,25 @@ public class CarController {
     }
 
     @PostMapping("/cars")
-    public ResponseEntity<Car> createCar(Car car){
-        Car createdCar = carManagerService.save(car);
-        return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
+    public ResponseEntity<Car> createCar(@RequestBody Car car){
+        try{
+            Car createdCar = carManagerService.save(car);
+            return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getAllCars(){
         List<Car> cars = carManagerService.getAllCars();
-        return new ResponseEntity<>(cars, HttpStatus.OK);
+        if(cars != null){
+            return new ResponseEntity<>(cars, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/cars/{id}")
