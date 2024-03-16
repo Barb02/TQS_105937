@@ -1,17 +1,16 @@
 package com.pt.ua;
  
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
- 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import java.util.Map;
 
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.slf4j.LoggerFactory.getLogger;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.slf4j.Logger;
-
+import io.cucumber.java.DataTableType;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,25 +19,57 @@ import io.cucumber.java.en.When;
 public class BookSearchSteps {
 	Library library = new Library();
 	List<Book> result = new ArrayList<>();
+	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+	@ParameterType("[0-9]{2}-[0-9]{2}-[0-9]{4}")
+	public Date iso8601Date(String dateString) throws ParseException {
+		return formatter.parse(dateString);
+	}
+
+	@DataTableType
+	public Book bookEntry(Map<String, String> tableEntry) throws ParseException{
+		return new Book(
+				tableEntry.get("Title"),
+				tableEntry.get("Author"),
+				formatter.parse( tableEntry.get("Published") ) );
+	}
+
  
-	@Given(".+book with the title '(.+)', written by '(.+)', published in (.+)")
-	public void addNewBook(final String title, final String author, @Format("dd MMMMM yyyy") final Date published) {
-		Book book = new Book(title, author, published);
-		library.addBook(book);
+	@Given("some books are available on the library")
+	public void addBooks(List<Book> books) {
+		for (Book book : books) {
+			library.addBook(book);
+		}
 	}
  
-	@When("^the customer searches for books published between (\\d+) and (\\d+)$")
-	public void setSearchParameters(@Format("yyyy") final Date from, @Format("yyyy") final Date to) {
-		result = library.findBooks(from, to);
+	@When("the customer searches for books published between {iso8601Date} and {iso8601Date}")
+	public void setSearchByDateParameters(Date from, Date to) {
+		result = library.findBooksByDate(from, to);
+	}
+
+	@When("the customer searches for books written by {string}")
+	public void setSearchByAuthorParameters(String author) {
+		result = library.findBooksByAuthor(author);
+	}
+
+	@When("the costumer searches for books with the title starting with or containing {string}")
+	public void setSearchByTitleParameters(String title) {
+		result = library.findBooksByTitle(title);
 	}
  
-	@Then("(\\d+) books should have been found$")
-	public void verifyAmountOfBooksFound(final int booksFound) {
-		assertThat(result.size(), equalTo(booksFound));
+	@Then("{int} books should be found")
+	public void verifyAmountOfBooksFound(int booksFound) {
+		assertEquals(result.size(), booksFound);
 	}
  
-	@Then("Book (\\d+) should have the title '(.+)'$")
-	public void verifyBookAtPosition(final int position, final String title) {
-		assertThat(result.get(position - 1).getTitle(), equalTo(title));
+	@Then("book {int} should have the title {string}")
+	public void verifyBookAtPosition(int position, String title) {
+		assertEquals(result.get(position - 1).getTitle(), title);
 	}
+
+	@Then("the book {string} should be found")
+	public void verifyBookFound(String title){
+		assertEquals(result.get(0).getTitle(), title);
+	}
+
 }
