@@ -2,16 +2,22 @@ package com.pt.ua.app.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import java.util.Set;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "connection")
-public class Connection {
+@Table(name = "trip")
+public class Trip {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "city1_id", referencedColumnName = "id")
@@ -25,12 +31,13 @@ public class Connection {
     private double value;
 
     @Column
-    private Set<LocalDateTime> dates;
+    private LocalDateTime dateTime;
 
-    public Connection(City city1, City city2, double value) {
+    public Trip(City city1, City city2, double value, LocalDateTime dateTime) {
         this.city1 = city1;
         this.city2 = city2;
         this.value = value;
+        this.dateTime = dateTime;
     }
 
     public City getCity1() {
@@ -57,12 +64,12 @@ public class Connection {
         this.value = value;
     }
 
-    public Set<LocalDateTime> getDates() {
-        return dates;
+    public LocalDateTime getDates() {
+        return dateTime;
     }
 
-    public void setDates(Set<LocalDateTime> dates) {
-        this.dates = dates;
+    public void setDates(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
     
 }
