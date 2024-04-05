@@ -22,5 +22,3 @@ buildNumber.properties
 # VSCode
 *.vscode
 
-# Env
-*.env
