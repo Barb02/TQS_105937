@@ -1,0 +1,1 @@
+INSERT INTO books VALUES (2, 'The Hobbit', 'J.R.R. Tolkien');

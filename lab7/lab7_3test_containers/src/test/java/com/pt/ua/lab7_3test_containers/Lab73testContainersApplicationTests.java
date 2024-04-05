@@ -1,5 +1,10 @@
 package com.pt.ua.lab7_3test_containers;
 
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,15 +14,17 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.junit.jupiter.Container;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Testcontainers
 @SpringBootTest
 class Lab73testContainersApplicationTests {
 
 	@Container
-	public static PostgreSQLContainer container = new PostgreSQLContainer()
-		.withUsername("duke")
-		.withPassword("password")
-		.withDatabaseName("test");
+	public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:16")
+            .withUsername("user")
+            .withPassword("password")
+            .withDatabaseName("lab7db");
 
 	@Autowired
 	private BookRepository bookRepository;
@@ -31,15 +38,20 @@ class Lab73testContainersApplicationTests {
 	}
 
 	@Test
+	@Order(1)
 	void contextLoads() {
-
 		Book book = new Book();
-		book.setName("Testcontainers");
-
+		book.setName("How to rizz 101");
+		book.setAuthor("Luna");
 		bookRepository.save(book);
-
 		System.out.println("Context loads!");
 	}
 
+	@Test
+	@Order(2)
+	void getBooks() {
+		List<Book> books = bookRepository.findAll();
+		assertThat(books).hasSize(2).extracting(Book::getName).contains("How to rizz 101", "The Hobbit");
+	}
 
 }
