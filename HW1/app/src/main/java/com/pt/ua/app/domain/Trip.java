@@ -28,15 +28,15 @@ public class Trip {
     private City city2;
 
     @Column
-    private double value;
+    private double price;
 
-    @Column
+    @Column(name = "date_time")
     private LocalDateTime dateTime;
 
-    public Trip(City city1, City city2, double value, LocalDateTime dateTime) {
+    public Trip(City city1, City city2, double price, LocalDateTime dateTime) {
         this.city1 = city1;
         this.city2 = city2;
-        this.value = value;
+        this.price = price;
         this.dateTime = dateTime;
     }
 
@@ -56,20 +56,19 @@ public class Trip {
         this.city2 = city2;
     }
 
-    public double getValue() {
-        return value;
+    public double getPrice() {
+        return price;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public LocalDateTime getDates() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
-
-    public void setDates(LocalDateTime dateTime) {
+    
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
-    
 }

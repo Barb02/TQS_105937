@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BusTrip</title>
+</head>
+<body>
+    <div>
+        <h1>BusTrip</h1>
+        <h2>A click away from the vacation of your dreams!</h2>
+        <div>
+            <form id="cityForm" th:action="@{/}" th:object="${cityForm}" method="post">
+                <select id="selectedOrigin" th:field="*{selectedOrigin}" onchange="submitForm()">
+                    <option value="0">Select city</option>
+                    <option th:each="city : ${origins}" th:value="${city.id}" th:text="${city.name}"></option>
+                </select>
+            </form>
+        </div>
+
+        <div>
+            <select>
+                <option value="0">Select city</option>
+                <option th:each="destination : ${destinations}" th:value="${destination.id}" th:text="${destination.name}"></option>
+            </select>
+        </div>
+
+        <div>
+            <form th:action="@{/trips}" th:object="${tripSearch}" method="post">
+                <input type="datetime-local" id="startDateTime">
+                <input type="datetime-local" id="endDateTime">
+                <input type="hidden" id="originId" name="originId">
+                <input type="hidden" id="destinationId" name="destinationId">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div>
+            <a th:each="trip : ${trips}" th:href="@{/trip/{id}(id=${trip.id})}">
+                <span th:text="${trip.name}"></span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function submitForm() {
+            document.getElementById("cityForm").submit();
+        }
+
+        function populateCityIds() {
+            var selectedOriginId = document.getElementById("selectedOrigin").value;
+            var selectedDestinationId = document.getElementById("selectedDestination").value;
+            
+            document.getElementById("originId").value = selectedOriginId;
+            document.getElementById("destinationId").value = selectedDestinationId;
+        }
+
+        document.getElementById("tripForm").addEventListener("submit", populateCityIds);
+    </script>
+
+</body>
+</html>
