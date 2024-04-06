@@ -33,11 +33,23 @@ public class Trip {
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
+    public Trip(){
+        
+    }
+
     public Trip(City city1, City city2, double price, LocalDateTime dateTime) {
         this.city1 = city1;
         this.city2 = city2;
         this.price = price;
         this.dateTime = dateTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public City getCity1() {

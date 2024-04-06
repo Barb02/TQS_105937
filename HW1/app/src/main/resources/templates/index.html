@@ -7,6 +7,7 @@
     <div>
         <h1>BusTrip</h1>
         <h2>A click away from the vacation of your dreams!</h2>
+        <p>Choose origin city:</p>
         <div>
             <form id="cityForm" th:action="@{/}" th:object="${cityForm}" method="post">
                 <select id="selectedOrigin" th:field="*{selectedOrigin}" onchange="submitForm()">
@@ -16,26 +17,39 @@
             </form>
         </div>
 
+        <p>Choose destination city:</p>
         <div>
-            <select>
+            <select id="selectedDestination">
                 <option value="0">Select city</option>
                 <option th:each="destination : ${destinations}" th:value="${destination.id}" th:text="${destination.name}"></option>
             </select>
         </div>
 
+        <p><b>Search departure date and time between:</b></p>
         <div>
-            <form th:action="@{/trips}" th:object="${tripSearch}" method="post">
-                <input type="datetime-local" id="startDateTime">
-                <input type="datetime-local" id="endDateTime">
-                <input type="hidden" id="originId" name="originId">
-                <input type="hidden" id="destinationId" name="destinationId">
+            <form id="tripForm" th:action="@{/trips}" th:object="${tripSearch}" method="post">
+                <span>Start:</span>
+                <input type="datetime-local" id="startDateTime" name="startDateTime">
+                <span>End:</span>
+                <input type="datetime-local" id="endDateTime" name="endDateTime">
+                <input type="hidden" id="city1Id" name="city1Id">
+                <input type="hidden" id="city2Id" name="city2Id">
                 <button type="submit">Search</button>
             </form>
         </div>
-        <div>
-            <a th:each="trip : ${trips}" th:href="@{/trip/{id}(id=${trip.id})}">
-                <span th:text="${trip.name}"></span>
-            </a>
+
+        <h3 th:if="${trips}">Trips available:</h3>
+        <div th:each="trip : ${trips}" >
+            <span><u>Origin:</u></span>
+            <span th:text="${trip.city1.name}"></span>
+            <span><u>Destination:</u></span>
+            <span th:text="${trip.city2.name}"></span>
+            <span><u>Date and time:</u></span>
+            <span th:text="${trip.dateTime}"></span>
+            <span><u>Price:</u></span>
+            <span th:text="${trip.price}"></span>
+            <a th:href="@{/trip/{id}(id=${trip.id})}">Click here to book this trip.</a>
+            <br>
         </div>
     </div>
 
@@ -48,8 +62,8 @@
             var selectedOriginId = document.getElementById("selectedOrigin").value;
             var selectedDestinationId = document.getElementById("selectedDestination").value;
             
-            document.getElementById("originId").value = selectedOriginId;
-            document.getElementById("destinationId").value = selectedDestinationId;
+            document.getElementById("city1Id").value = selectedOriginId;
+            document.getElementById("city2Id").value = selectedDestinationId;
         }
 
         document.getElementById("tripForm").addEventListener("submit", populateCityIds);
