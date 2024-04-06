@@ -46,9 +46,9 @@ public class TripServiceUnitTest {
         LocalDateTime time2 = LocalDateTime.of(2024, 04, 05, 11, 00);
         LocalDateTime time3 = LocalDateTime.of(2024, 04, 05, 12, 00);
 
-        aveiroPorto1 = new Trip(aveiro, porto, 10, time1);
-        aveiroPorto2 = new Trip(aveiro, porto, 10, time2);
-        aveiroLisboa = new Trip(aveiro, lisboa, 15, time3);
+        aveiroPorto1 = new Trip(aveiro, porto, 10, time1, 20);
+        aveiroPorto2 = new Trip(aveiro, porto, 10, time2, 20);
+        aveiroLisboa = new Trip(aveiro, lisboa, 15, time3, 25);
 
         List<Trip> allTrips = Arrays.asList(aveiroPorto1, aveiroPorto2, aveiroLisboa);
     }

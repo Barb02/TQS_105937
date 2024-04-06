@@ -1,0 +1,42 @@
+<div>
+    <a href="/">Home</a>
+    <h1>BusTrip</h1>
+    <h3>Fill the form with the necessary information to complete your booking.</h3>
+    <h4>Trip details:</h4>
+    <span><u>Origin:</u></span>
+    <span th:text="${trip.city1.name}"></span>
+    <br>
+    <span><u>Destination:</u></span>
+    <span th:text="${trip.city2.name}"></span>
+    <br>
+    <span><u>Date and time:</u></span>
+    <span th:text="${trip.dateTime}"></span>
+    <br>
+    <span><u>Price:</u></span>
+    <span th:text="${trip.price}"></span>
+</div>
+
+<div>
+    <form id="reservationForm" th:action="@{'/trips/' + ${trip.id} + '/reservations'}" th:object="${reservationRequest}" method="post">
+        <input type="hidden" id="tripId" name="tripId" th:value="${trip.id}">
+        <p>Full name:</p>
+        <input type="text" id="name" name="name" required>
+        <p>Address:</p>
+        <input type="text" id="address" name="address" required>
+        <p>Phone number:</p>
+        <input type="text" id="phone" name="phone" required>
+        <p>Zip code:</p>
+        <input type="text" id="zipCode" name="zipCode" required>
+        <p>Card number:</p>
+        <input type="text" id="cardNumber" name="cardNumber" required>
+        <p>Expiration month:</p>
+        <input type="text" id="expirationMonth" name="expirationMonth" required>
+        <p>Expiration year:</p>
+        <input type="text" id="expirationYear" name="expirationYear" required>
+        <p>CVV:</p>
+        <input type="text" id="cardCvv" name="cardCvv" required>
+        <p>Card holder name:</p>
+        <input type="text" id="cardHolderName" name="cardHolderName" required>
+        <button type="submit">Book</button>
+    </form>
+</div>

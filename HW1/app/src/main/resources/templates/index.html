@@ -5,8 +5,18 @@
 </head>
 <body>
     <div>
+        <a href="/">Home</a>
         <h1>BusTrip</h1>
         <h2>A click away from the vacation of your dreams!</h2>
+        <div>
+            <h4>Already got a reservation? Check its status here:</h4>
+            <p>Enter your reservation code:</p>
+            <form th:action="@{/reservation-status}" method="get">
+                <input type="text" id="token" name="token" required>
+                <button type="submit">Check reservation status</button>
+            </form>                                             
+        </div>
+        <br>
         <p>Choose origin city:</p>
         <div>
             <form id="cityForm" th:action="@{/}" th:object="${cityForm}" method="post">
@@ -48,7 +58,7 @@
             <span th:text="${trip.dateTime}"></span>
             <span><u>Price:</u></span>
             <span th:text="${trip.price}"></span>
-            <a th:href="@{/trip/{id}(id=${trip.id})}">Click here to book this trip.</a>
+            <a th:href="@{'/trips/' + ${trip.id} + '/reservations'}">Click here to book this trip.</a>
             <br>
         </div>
     </div>

@@ -1,0 +1,37 @@
+<div>
+    <a href="/">Home</a>
+    <h1>BusTrip</h1>
+    <h2>Reservation status</h2>
+    <span><b>Use this code to check your reservation status whenever you want:</b></span>
+    <span th:text="${reservation.id}"></span>
+    <br>
+    <br>
+    <span>Reservation status:</span>
+    <span th:text="${reservation.status}" style="color: green;"></span>
+    <br>
+    <br>
+    <span>Client data:</span>
+    <br>
+    <br>
+    <span><u>Full name:</u></span>
+    <span th:text="${reservation.name}"></span>
+    <br>
+    <span><u>Phone number:</u></span>
+    <span th:text="${reservation.phone}"></span>
+    <br>
+    <br>
+    <span>Trip details:</span>
+    <br>
+    <br>
+    <span><u>Origin:</u></span>
+    <span th:text="${reservation.trip.city1.name}"></span>
+    <br>
+    <span><u>Destination:</u></span>
+    <span th:text="${reservation.trip.city2.name}"></span>
+    <br>
+    <span><u>Date and time:</u></span>
+    <span th:text="${reservation.trip.dateTime}"></span>
+    <br>
+    <span><u>Price:</u></span>
+    <span th:text="${reservation.trip.price}"></span>
+</div>

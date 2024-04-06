@@ -33,15 +33,19 @@ public class Trip {
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
+    @Column
+    private Integer seats;
+
     public Trip(){
         
     }
 
-    public Trip(City city1, City city2, double price, LocalDateTime dateTime) {
+    public Trip(City city1, City city2, double price, LocalDateTime dateTime, Integer seats) {
         this.city1 = city1;
         this.city2 = city2;
         this.price = price;
         this.dateTime = dateTime;
+        this.seats = seats;
     }
 
     public Long getId() {
@@ -82,5 +86,13 @@ public class Trip {
     
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Integer getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Integer seats) {
+        this.seats = seats;
     }
 }

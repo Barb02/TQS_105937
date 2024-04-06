@@ -29,7 +29,7 @@ public class LoadDB implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(cityRepository.findAll().isEmpty())
+        if(cityRepository.findAll().isEmpty() && tripRepository.findAll().isEmpty())
             loadDB();
     }
 
@@ -43,9 +43,9 @@ public class LoadDB implements CommandLineRunner {
         LocalDateTime time2 = LocalDateTime.of(2024, 04, 05, 11, 00);
         LocalDateTime time3 = LocalDateTime.of(2024, 04, 05, 12, 00);
 
-        Trip aveiroPorto1 = new Trip(aveiro, porto, 10, time1);
-        Trip aveiroPorto2 = new Trip(aveiro, porto, 10, time2);
-        Trip aveiroLisboa = new Trip(aveiro, lisboa, 15, time3);
+        Trip aveiroPorto1 = new Trip(aveiro, porto, 10, time1, 20);
+        Trip aveiroPorto2 = new Trip(aveiro, porto, 10, time2, 20);
+        Trip aveiroLisboa = new Trip(aveiro, lisboa, 15, time3, 25);
 
 		List<Trip> allTrips = Arrays.asList(aveiroPorto1, aveiroPorto2, aveiroLisboa);
 

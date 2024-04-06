@@ -41,4 +41,9 @@ public class TripServiceImpl implements TripService {
     public City getCityById(Long id){
         return cityRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Trip getTripById(Long id){
+        return tripRepository.findById(id).orElse(null);
+    }
 }
