@@ -12,6 +12,7 @@ import com.pt.ua.app.repository.TripRepository;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,10 +59,16 @@ public class TripRepositoryTest {
     }
 
     @Test
-    void whenFindDestinationCities_thenReturnDestinationCities(){
+    void givenCityWithAvailableDestinations_whenFindDestinationCities_thenReturnDestinationCities(){
         List<City> response = tripRepository.findDestinationCities(aveiro);
         List<City> aveiroDestinationCities = Arrays.asList(porto, lisboa);
         assertThat(response).isEqualTo(aveiroDestinationCities);
+    }
+
+    @Test
+    void givenCityWithotAvailableDestinations_whenFindDestinationCities_thenReturnDestinationCities(){
+        List<City> response = tripRepository.findDestinationCities(lisboa);
+        assertThat(response).isEqualTo(new ArrayList<>());
     }
 
     @Test

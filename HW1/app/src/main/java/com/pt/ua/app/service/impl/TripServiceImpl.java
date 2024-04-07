@@ -1,11 +1,14 @@
 package com.pt.ua.app.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.pt.ua.app.repository.TripRepository;
 import com.pt.ua.app.repository.CityRepository;
 import com.pt.ua.app.service.TripService;
 import com.pt.ua.app.domain.*;
+import java.io.IOException;
 
 import java.time.LocalDateTime;
 
@@ -16,10 +19,14 @@ public class TripServiceImpl implements TripService {
     
     private final TripRepository tripRepository;
     private final CityRepository cityRepository;
+    private final ExchangeService exchangeService;
 
-    public TripServiceImpl(TripRepository tripRepository, CityRepository cityRepository) {
+    private static final Logger log = LoggerFactory.getLogger(TripServiceImpl.class);
+
+    public TripServiceImpl(TripRepository tripRepository, CityRepository cityRepository, ExchangeService exchangeService){
         this.tripRepository = tripRepository;
         this.cityRepository = cityRepository;
+        this.exchangeService = exchangeService;
     }
 
     @Override
@@ -33,8 +40,15 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<Trip> getTrips(City origin, City destination, LocalDateTime startDate, LocalDateTime endDate){
-        return tripRepository.findByCity1AndCity2AndDateTimeBetween(origin, destination, startDate, endDate);
+    public List<Trip> getTrips(City origin, City destination, LocalDateTime startDate, LocalDateTime endDate, String currency) throws IOException, InterruptedException{
+        List<Trip> trips = tripRepository.findByCity1AndCity2AndDateTimeBetween(origin, destination, startDate, endDate);
+        if(! currency.equals("EUR")){
+            double currentExchangeRate = exchangeService.getExchangeRate(currency);
+            for(Trip trip : trips){
+                trip.setPrice(trip.getPrice() * currentExchangeRate);
+            }
+        }
+        return trips;
     }
 
     @Override

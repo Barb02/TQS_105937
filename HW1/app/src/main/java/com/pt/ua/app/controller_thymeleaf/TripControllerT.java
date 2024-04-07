@@ -42,7 +42,7 @@ public class TripControllerT {
         return "index";
     }
 
-    @PostMapping("/trips")
+    /* @PostMapping("/trips")
     public String getTrips(@ModelAttribute("cityForm") CityForm cityForm, TripSearch search, Model model){
         City origin = tripService.getCityById(search.getCity1Id());
         City destination = tripService.getCityById(search.getCity2Id());
@@ -56,7 +56,7 @@ public class TripControllerT {
         model.addAttribute("destinations", destinations);
 
         return "index";
-    }
+    } */
 
 
 }
