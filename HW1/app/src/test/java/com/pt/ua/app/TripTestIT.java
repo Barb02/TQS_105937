@@ -1,9 +1,11 @@
 package com.pt.ua.app;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +19,16 @@ import io.restassured.RestAssured;
 import com.pt.ua.app.domain.City;
 import com.pt.ua.app.domain.Trip;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
-import io.restassured.RestAssured;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
+@TestPropertySource(properties = "spring.jpa.hibernate.ddl-auto=create")
 @ActiveProfiles("test")
 public class TripTestIT {
     
@@ -35,6 +40,19 @@ public class TripTestIT {
 
     @Autowired
     private CityRepository cityRepository;
+
+    @Container
+	public static MySQLContainer<?> container = new MySQLContainer<>("mysql:latest")
+            .withUsername("user")
+            .withPassword("password")
+            .withDatabaseName("testdb");
+    
+    @DynamicPropertySource
+    static void properties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", container::getJdbcUrl);
+        registry.add("spring.datasource.password", container::getPassword);
+        registry.add("spring.datasource.username", container::getUsername);
+    }
 
     private City aveiro, aveiroSaved;
     private City porto, portoSaved;
