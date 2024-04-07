@@ -57,7 +57,12 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Trip getTripById(Long id){
-        return tripRepository.findById(id).orElse(null);
+    public Trip getTripById(Long id, String currency) throws IOException, InterruptedException{
+        Trip trip = tripRepository.findById(id).orElse(null);
+        if(! currency.equals("EUR")){
+            double currentExchangeRate = exchangeService.getExchangeRate(currency);
+            trip.setPrice(trip.getPrice() * currentExchangeRate);
+        }
+        return trip;
     }
 }

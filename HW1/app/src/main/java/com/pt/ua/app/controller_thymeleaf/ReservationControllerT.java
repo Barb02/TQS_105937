@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import com.pt.ua.app.service.ReservationService;
 import com.pt.ua.app.service.TripService;
 import com.pt.ua.app.domain.Reservation;
+import com.pt.ua.app.domain.Trip;
 import com.pt.ua.app.dto.ReservationRequest;
 
 @Controller
@@ -29,8 +30,16 @@ public class ReservationControllerT {
     }
     
     @GetMapping("/trips/{tripId}/reservations")
-    public String getReservationPage(@PathVariable long tripId, Model model){
-        model.addAttribute("trip", tripService.getTripById(tripId));
+    public String getReservationPage(@PathVariable long tripId, @RequestParam String currency, Model model){
+        Trip trip = null;
+        try{
+            trip = tripService.getTripById(tripId, currency);
+        }
+        catch(Exception e){
+            model.addAttribute("error", "Error fetching trip details");
+            return "reservation";
+        }
+        model.addAttribute("trip", trip);
         return "reservation";
     }
 

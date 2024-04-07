@@ -13,6 +13,8 @@ import com.pt.ua.app.domain.City;
 import com.pt.ua.app.domain.Trip;
 import com.pt.ua.app.dto.CityForm;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -42,12 +44,20 @@ public class TripControllerT {
         return "index";
     }
 
-    /* @PostMapping("/trips")
+    @PostMapping("/trips")
     public String getTrips(@ModelAttribute("cityForm") CityForm cityForm, TripSearch search, Model model){
         City origin = tripService.getCityById(search.getCity1Id());
         City destination = tripService.getCityById(search.getCity2Id());
         
-        List<Trip> trips = tripService.getTrips(origin, destination, search.getStartDateTime(), search.getEndDateTime());
+        List<Trip> trips;
+        try{
+            trips = tripService.getTrips(origin, destination, search.getStartDateTime(), search.getEndDateTime(), search.getSelectedCurrency());
+        }
+        catch(IOException | InterruptedException e){
+            model.addAttribute("error", "Error fetching exchange rates from external service");
+            return "index";
+        }
+        
         model.addAttribute("trips", trips);
         
         model.addAttribute("origins", tripService.getAllCities());
@@ -56,7 +66,7 @@ public class TripControllerT {
         model.addAttribute("destinations", destinations);
 
         return "index";
-    } */
+    }
 
 
 }

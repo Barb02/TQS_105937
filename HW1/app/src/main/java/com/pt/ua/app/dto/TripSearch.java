@@ -7,16 +7,18 @@ public class TripSearch {
     Long city2Id;
     LocalDateTime startDateTime;
     LocalDateTime endDateTime;
+    String selectedCurrency;
 
     public TripSearch(){
         
     }
 
-    public TripSearch (Long city1Id, Long city2Id, LocalDateTime startDateTime, LocalDateTime endDateTime){
+    public TripSearch (Long city1Id, Long city2Id, LocalDateTime startDateTime, LocalDateTime endDateTime, String selectedCurrency){
         this.city1Id = city1Id;
         this.city2Id = city2Id;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        this.selectedCurrency = selectedCurrency;
     }
 
     public Long getCity1Id() {
@@ -43,6 +45,15 @@ public class TripSearch {
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
+
+    public String getSelectedCurrency() {
+        return selectedCurrency;
+    }
+
+    public void setSelectedCurrency(String selectedCurrency) {
+        this.selectedCurrency = selectedCurrency;
+    }
+    
 
     
 }

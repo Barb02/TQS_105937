@@ -3,17 +3,22 @@
     <h1>BusTrip</h1>
     <h3>Fill the form with the necessary information to complete your booking.</h3>
     <h4>Trip details:</h4>
-    <span><u>Origin:</u></span>
-    <span th:text="${trip.city1.name}"></span>
-    <br>
-    <span><u>Destination:</u></span>
-    <span th:text="${trip.city2.name}"></span>
-    <br>
-    <span><u>Date and time:</u></span>
-    <span th:text="${trip.dateTime}"></span>
-    <br>
-    <span><u>Price:</u></span>
-    <span th:text="${trip.price}"></span>
+    
+    <span th:if="${error}" th:text="${error}"></span>
+
+    <div th:if="${trip}">
+        <span><u>Origin:</u></span>
+        <span th:text="${trip.city1.name}"></span>
+        <br>
+        <span><u>Destination:</u></span>
+        <span th:text="${trip.city2.name}"></span>
+        <br>
+        <span><u>Date and time:</u></span>
+        <span th:text="${trip.dateTime}"></span>
+        <br>
+        <span><u>Price:</u></span>
+        <span th:text="${trip.price}"></span>
+    </div>
 </div>
 
 <div>

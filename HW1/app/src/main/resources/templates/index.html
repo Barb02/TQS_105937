@@ -44,9 +44,18 @@
                 <input type="datetime-local" id="endDateTime" name="endDateTime">
                 <input type="hidden" id="city1Id" name="city1Id">
                 <input type="hidden" id="city2Id" name="city2Id">
+                <span>Choose currency:</span>
+                <select class="form-control" name="selectedCurrency">
+                    <option th:value="'EUR'" th:text="'EUR'"></option>
+                    <option th:value="'USD'" th:text="'USD'"></option>
+                    <option th:value="'GBP'" th:text="'GBP'"></option>
+                    <option th:value="'BRL'" th:text="'BRL'"></option>
+                </select>
                 <button type="submit">Search</button>
             </form>
         </div>
+
+        <span th:if="${error}" th:text="${error}"></span>
 
         <h3 th:if="${trips}">Trips available:</h3>
         <div th:each="trip : ${trips}" >
@@ -57,8 +66,8 @@
             <span><u>Date and time:</u></span>
             <span th:text="${trip.dateTime}"></span>
             <span><u>Price:</u></span>
-            <span th:text="${trip.price}"></span>
-            <a th:href="@{'/trips/' + ${trip.id} + '/reservations'}">Click here to book this trip.</a>
+            <span th:text="${#numbers.formatDecimal(trip.price, 1, 2)}"></span>
+            <a th:href="@{'/trips/' + ${trip.id} + '/reservations?currency=' + ${tripSearch.selectedCurrency}}">Click here to book this trip.</a>
             <br>
         </div>
     </div>

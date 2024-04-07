@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public interface TripService {
     public City getCityById(Long id);
-    public Trip getTripById(Long id);
+    public Trip getTripById(Long id, String currency) throws IOException, InterruptedException;
     public List<City> getAllCities();
     public List<City> getDestinationCities(City origin);
     public List<Trip> getTrips(City origin, City destination, LocalDateTime startDate, LocalDateTime endDate, String currency) throws IOException, InterruptedException;

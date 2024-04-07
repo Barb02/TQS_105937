@@ -92,4 +92,6 @@ public class TripController {
         }   
     }
 
+    //TODO: Get trip by id
+
 }
