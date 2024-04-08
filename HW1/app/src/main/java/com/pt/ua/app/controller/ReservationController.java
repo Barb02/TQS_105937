@@ -1,5 +1,7 @@
 package com.pt.ua.app.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1")
 public class ReservationController {
+
+    private static final Logger log = LoggerFactory.getLogger(ReservationController.class);
     
     private final ReservationService reservationService;
 
@@ -40,6 +44,9 @@ public class ReservationController {
             @ApiResponse(responseCode = "400", description = "Reservation data is not valid", content = @Content)})
     @PostMapping("reservations")
     public Reservation createReservation(@RequestBody ReservationRequest reservationRequest){
+
+        log.info("Creating reservation for trip: " + reservationRequest.getTripId());
+        
         Reservation reservationSaved = reservationService.createReservation(reservationRequest);
         if (reservationSaved != null)
             return reservationSaved;
@@ -48,13 +55,16 @@ public class ReservationController {
         }
     }
 
-    @Operation(summary = "Get a reservation by its id")
+    @Operation(summary = "Get a reservation by its token")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {@Content(mediaType = "application/json",schema = @Schema(implementation = Reservation.class))}),
             @ApiResponse(responseCode = "404", description = "Reservation not found", content = @Content)})
     @GetMapping("reservations/{reservationId}")
     public Reservation getReservationById(@PathVariable UUID tokenUUID){
+
+        log.info("Getting reservation by token " + tokenUUID);
+
         Reservation reservation = reservationService.getReservationByToken(tokenUUID);
         if (reservation != null)
             return reservation;

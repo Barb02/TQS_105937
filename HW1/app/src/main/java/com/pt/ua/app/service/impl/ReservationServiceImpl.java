@@ -2,6 +2,8 @@ package com.pt.ua.app.service.impl;
 
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.pt.ua.app.repository.ReservationRepository;
@@ -13,6 +15,8 @@ import com.pt.ua.app.domain.Trip;
 
 @Service
 public class ReservationServiceImpl implements ReservationService{
+
+    private static final Logger log = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
     private final ReservationRepository reservationRepository;
     private final TripRepository tripRepository;
@@ -26,9 +30,12 @@ public class ReservationServiceImpl implements ReservationService{
     public Reservation createReservation(ReservationRequest reservationRequest){
         Reservation reservation = new Reservation(reservationRequest);
         Trip trip = tripRepository.findById(reservationRequest.getTripId()).get();
+
         if(trip.getSeats() - reservationRequest.getNumberOfTickets() < 0){
+            log.error("Not enough seats available for trip: " + reservationRequest.getTripId());
             return null;
         }
+
         trip.setSeats(trip.getSeats() - reservationRequest.getNumberOfTickets());
         reservation.setTrip(trip);
         return reservationRepository.save(reservation);

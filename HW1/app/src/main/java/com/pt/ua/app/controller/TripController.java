@@ -1,5 +1,7 @@
 package com.pt.ua.app.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,8 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class TripController {
 
+    private static final Logger log = LoggerFactory.getLogger(TripController.class);
+
     private final TripService tripService;
 
     @Autowired
@@ -43,6 +47,9 @@ public class TripController {
             @ApiResponse(responseCode = "404", description = "Cities not found", content = @Content)})
     @GetMapping("cities")
     public List<City> getCities(){
+
+        log.info("Getting all cities");
+
         List<City> cities = tripService.getAllCities();
         if(cities != null)
             return cities;
@@ -58,6 +65,9 @@ public class TripController {
             @ApiResponse(responseCode = "404", description = "Cities not found", content = @Content)})
     @GetMapping("cities/{originId}/destinations")
     public List<City> getDestinationCities(@PathVariable Long originId){
+
+        log.info("Getting destination cities from origin city " + originId);
+        
         City origin = tripService.getCityById(originId);
         List<City> cities = tripService.getDestinationCities(origin);
         if(cities != null)
@@ -75,6 +85,9 @@ public class TripController {
             @ApiResponse(responseCode = "500", description = "Error fetching exchange rates from external service", content = @Content)})
     @GetMapping("trips")
     public List<Trip> getTrips(@RequestParam Long originId, @RequestParam Long destinationId, @RequestParam String startDate, @RequestParam String endDate, @RequestParam String currency){
+        
+        log.info("Getting trips from origin city " + originId + " to destination city " + destinationId + " from " + startDate + " to " + endDate + " in " + currency);
+
         City origin = tripService.getCityById(originId);
         City destination = tripService.getCityById(destinationId);
         LocalDateTime startDateTime = LocalDateTime.parse(startDate);
@@ -101,6 +114,9 @@ public class TripController {
             @ApiResponse(responseCode = "500", description = "Error fetching exchange rates from external service", content = @Content)})
     @GetMapping("trips/{id}")
     public Trip getTrip(@PathVariable Long id, @RequestParam String currency){
+
+        log.info("Getting trip by id " + id + " in " + currency);
+
         Trip trip = null;
         try{
             trip = tripService.getTripById(id, currency);

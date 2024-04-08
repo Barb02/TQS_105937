@@ -35,6 +35,9 @@ public class ReservationControllerT {
     
     @GetMapping("/trips/{tripId}/reservations")
     public String getReservationPage(@PathVariable long tripId, @RequestParam String currency, Model model){
+
+        log.info("Getting reservation page for tripId: " + tripId + " and currency: " + currency);
+
         Trip trip = null;
         try{
             trip = tripService.getTripById(tripId, currency);
@@ -49,6 +52,9 @@ public class ReservationControllerT {
 
     @PostMapping("/trips/{tripId}/reservations")
     public String createReservation(@ModelAttribute ReservationRequest reservationRequest, Model model){
+
+        log.info("Creating reservation for trip: " + reservationRequest.getTripId());
+
         Reservation reservationSaved = reservationService.createReservation(reservationRequest);
         if(reservationSaved == null){
             model.addAttribute("error", "Reservation data is not valid");
@@ -59,6 +65,9 @@ public class ReservationControllerT {
 
     @GetMapping("/reservation-status")
     public String getReservationStatusPage(@RequestParam String token, Model model){
+
+        log.info("Getting reservation status for token: " + token);
+
         UUID tokenUUID;
         try{
             tokenUUID = UUID.fromString(token);

@@ -43,7 +43,11 @@ public class TripServiceImpl implements TripService {
     public List<Trip> getTrips(City origin, City destination, LocalDateTime startDate, LocalDateTime endDate, String currency) throws IOException, InterruptedException{
         List<Trip> trips = tripRepository.findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(origin, destination, startDate, endDate, 0);
         if(! currency.equals("EUR")){
+
+            log.info("Calling exchange service to get exchange rate for currency: " + currency);
+
             double currentExchangeRate = exchangeService.getExchangeRate(currency);
+
             for(Trip trip : trips){
                 trip.setPrice(trip.getPrice() * currentExchangeRate);
             }
@@ -60,6 +64,9 @@ public class TripServiceImpl implements TripService {
     public Trip getTripById(Long id, String currency) throws IOException, InterruptedException{
         Trip trip = tripRepository.findById(id).orElse(null);
         if(! currency.equals("EUR")){
+
+            log.info("Calling exchange service to get exchange rate for currency: " + currency);
+             
             double currentExchangeRate = exchangeService.getExchangeRate(currency);
             trip.setPrice(trip.getPrice() * currentExchangeRate);
         }

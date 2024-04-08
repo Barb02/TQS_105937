@@ -2,6 +2,8 @@ package com.pt.ua.app;
 
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -25,6 +27,8 @@ public class LoadDB implements CommandLineRunner {
     private final TripRepository tripRepository;
 	private final CityRepository cityRepository;
 	private final ReservationRepository reservationRepository;
+	
+	private static final Logger log = LoggerFactory.getLogger(LoadDB.class);
 
 	@Autowired
 	public LoadDB(TripRepository tripRepository, CityRepository cityRepository, ReservationRepository reservationRepository) {
@@ -35,8 +39,10 @@ public class LoadDB implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(cityRepository.findAll().isEmpty() && tripRepository.findAll().isEmpty())
+        if(cityRepository.findAll().isEmpty() && tripRepository.findAll().isEmpty()){
+			log.info("Loading database...");
             loadDB();
+		}
     }
 
     public void loadDB() {
@@ -69,6 +75,8 @@ public class LoadDB implements CommandLineRunner {
 		Reservation reservation = new Reservation(new ReservationRequest(tripSaved.getId(), "João", "Rua do João", "912345678", "3800-000", "1234567890123456", "12", "2024", "123", "João", 2));
 		reservation.setToken(UUID.fromString("c1c4577b-0c71-40f6-b42a-d30461792708"));
 		reservation.setTrip(tripSaved);
-		Reservation savedReservation = reservationRepository.save(reservation);
+		reservationRepository.save(reservation);
+
+		log.info("Database loaded.");
 	}
 }

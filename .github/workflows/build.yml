@@ -35,4 +35,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: cd HW1/app && mvn -B verify jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=bustrip -Dsonar.projectName='bustrip' -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+        run: |
+          cd HW1/app
+          spring-boot:run &
+          mvn -B verify jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=bustrip -Dsonar.projectName='bustrip' -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml

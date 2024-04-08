@@ -32,6 +32,7 @@ public class ExchangeRateCache {
 
     public void put(String currency, double value) {
         cache.put(currency, new CacheEntry(value, ttl));
+        log.info(currency + " added to cache");
     }
 
     private class CacheCleanupTask implements Runnable {

@@ -1,5 +1,7 @@
 package com.pt.ua.app.controller_thymeleaf;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +16,12 @@ import com.pt.ua.app.domain.Trip;
 import com.pt.ua.app.dto.CityForm;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class TripControllerT {
+
+    private static final Logger log = LoggerFactory.getLogger(TripControllerT.class);
 
     private final TripService tripService;
 
@@ -29,6 +32,9 @@ public class TripControllerT {
     
     @GetMapping("/")
     public String getCities(Model model){
+
+        log.info("Getting index page with origin cities");
+
         model.addAttribute("cityForm", new CityForm());
         model.addAttribute("origins", tripService.getAllCities());
         model.addAttribute("tripSearch", new TripSearch());
@@ -37,6 +43,9 @@ public class TripControllerT {
 
     @GetMapping("/token-error")
     public String getCitiesTokenError(Model model){
+
+        log.info("Getting index page with token error message");
+
         model.addAttribute("cityForm", new CityForm());
         model.addAttribute("origins", tripService.getAllCities());
         model.addAttribute("tripSearch", new TripSearch());
@@ -46,6 +55,9 @@ public class TripControllerT {
 
     @PostMapping("/")
     public String submitForm(@ModelAttribute("cityForm") CityForm cityForm, Model model) {
+
+        log.info("Submitting origin cities form with origin city: " + cityForm.getSelectedOrigin().getName());
+
         City selectedOrigin = cityForm.getSelectedOrigin();
         List<City> destinations = tripService.getDestinationCities(selectedOrigin);
         model.addAttribute("origins", tripService.getAllCities());
@@ -55,6 +67,9 @@ public class TripControllerT {
 
     @PostMapping("/trips")
     public String getTrips(@ModelAttribute("cityForm") CityForm cityForm, TripSearch search, Model model){
+
+        log.info("Getting trips for origin city: " + cityForm.getSelectedOrigin().getName() + " and destination city: " + search.getCity2Id() + " from " + search.getStartDateTime() + " to " + search.getEndDateTime() + " in currency: " + search.getSelectedCurrency());
+
         City origin = tripService.getCityById(search.getCity1Id());
         City destination = tripService.getCityById(search.getCity2Id());
         

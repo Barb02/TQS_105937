@@ -1,8 +1,13 @@
 package com.pt.ua.app.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CacheEntry {
     private double value;
     private long expirationTime;
+
+    private static final Logger log = LoggerFactory.getLogger(CacheEntry.class);
 
     public CacheEntry(double value, long ttl) {
         this.value = value;
@@ -14,6 +19,10 @@ public class CacheEntry {
     }
 
     public boolean isExpired() {
-        return System.currentTimeMillis() > expirationTime;
+        if (System.currentTimeMillis() > expirationTime){
+            log.info("Cache entry expired");
+            return true;
+        }
+        return false;
     }
 }
