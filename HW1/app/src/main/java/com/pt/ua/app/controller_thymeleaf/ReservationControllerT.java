@@ -46,6 +46,10 @@ public class ReservationControllerT {
     @PostMapping("/trips/{tripId}/reservations")
     public String createReservation(@ModelAttribute ReservationRequest reservationRequest, Model model){
         Reservation reservationSaved = reservationService.createReservation(reservationRequest);
+        if(reservationSaved == null){
+            model.addAttribute("error", "Reservation data is not valid");
+            return "reservation";
+        }
         return "redirect:/reservation-status?token=" + reservationSaved.getId();
     }
 

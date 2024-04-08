@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import com.pt.ua.app.service.ReservationService;
-import com.pt.ua.app.service.TripService;
 import com.pt.ua.app.domain.Reservation;
 import com.pt.ua.app.dto.ReservationRequest;
 
@@ -28,12 +27,10 @@ import java.util.UUID;
 public class ReservationController {
     
     private final ReservationService reservationService;
-    private final TripService tripService;
 
     @Autowired
-    public ReservationController(ReservationService reservationService, TripService tripService) {
+    public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
-        this.tripService = tripService;
     }
 
     @Operation(summary = "Post a reservation for a trip")

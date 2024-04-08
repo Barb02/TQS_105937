@@ -12,11 +12,12 @@ public class ReservationRequest {
     private String cardExpirationYear;
     private String cardCvv;
     private String cardHolderName;
+    private Integer numberOfTickets;  
 
     public ReservationRequest() {
     }
 
-    public ReservationRequest(Long tripId, String name, String address, String phone, String zipCode, String cardNumber, String cardExpirationMonth, String cardExpirationYear, String cardCvv, String cardHolderName) {
+    public ReservationRequest(Long tripId, String name, String address, String phone, String zipCode, String cardNumber, String cardExpirationMonth, String cardExpirationYear, String cardCvv, String cardHolderName, Integer numberOfTickets) {
         this.tripId = tripId;
         this.name = name;
         this.address = address;
@@ -27,6 +28,7 @@ public class ReservationRequest {
         this.cardExpirationYear = cardExpirationYear;
         this.cardCvv = cardCvv;
         this.cardHolderName = cardHolderName;
+        this.numberOfTickets = numberOfTickets;
     }
 
     public Long getTripId() {
@@ -107,6 +109,14 @@ public class ReservationRequest {
 
     public void setCardHolderName(String cardHolderName) {
         this.cardHolderName = cardHolderName;
+    }
+
+    public Integer getNumberOfTickets() {
+        return numberOfTickets;
+    }
+
+    public void setNumberOfTickets(Integer numberOfTickets) {
+        this.numberOfTickets = numberOfTickets;
     }
 
     

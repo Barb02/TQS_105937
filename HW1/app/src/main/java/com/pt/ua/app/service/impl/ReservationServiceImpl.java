@@ -26,7 +26,10 @@ public class ReservationServiceImpl implements ReservationService{
     public Reservation createReservation(ReservationRequest reservationRequest){
         Reservation reservation = new Reservation(reservationRequest);
         Trip trip = tripRepository.findById(reservationRequest.getTripId()).get();
-        trip.setSeats(trip.getSeats() - 1);
+        if(trip.getSeats() - reservationRequest.getNumberOfTickets() < 0){
+            return null;
+        }
+        trip.setSeats(trip.getSeats() - reservationRequest.getNumberOfTickets());
         reservation.setTrip(trip);
         return reservationRepository.save(reservation);
     }

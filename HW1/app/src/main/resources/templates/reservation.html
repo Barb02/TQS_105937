@@ -16,14 +16,24 @@
         <span><u>Date and time:</u></span>
         <span th:text="${trip.dateTime}"></span>
         <br>
-        <span><u>Price:</u></span>
+        <span><u>Price (per person):</u></span>
         <span th:text="${#numbers.formatDecimal(trip.price, 1, 2)}"></span>
+        <br>
+        <span><u>Number of available seats:</u></span>
+        <span th:text="${trip.seats}"></span>
     </div>
 </div>
 
 <div>
     <form id="reservationForm" th:action="@{'/trips/' + ${trip.id} + '/reservations'}" th:object="${reservationRequest}" method="post">
         <input type="hidden" id="tripId" name="tripId" th:value="${trip.id}">
+        <input type="hidden" id="numberOfSeats" name="numberOfSeats" th:value="${trip.seats}">
+        <br>
+        <br>
+        <span>Number of tickets:</span>
+        <input onchange="verifyAvailabilty()" type="text" id="numberOfTickets" name="numberOfTickets" required>
+        <br>
+        <br>
         <p>Full name:</p>
         <input type="text" id="name" name="name" required>
         <p>Address:</p>
@@ -42,6 +52,21 @@
         <input type="text" id="cardCvv" name="cardCvv" required>
         <p>Card holder name:</p>
         <input type="text" id="cardHolderName" name="cardHolderName" required>
-        <button type="submit">Book</button>
+        <button id="submitButton" type="submit">Book</button>
     </form>
 </div>
+
+<script>
+    function verifyAvailabilty() {
+        var numberOfTickets = document.getElementById("numberOfTickets").value;
+        var seats = document.getElementById("numberOfSeats").value;
+        var submitButton = document.getElementById("submitButton");
+        if (numberOfTickets > seats) {
+            submitButton.disabled = true;
+            alert("There are not enough seats available for this trip. Please choose a smaller number of tickets.");
+        }
+        else{
+            submitButton.disabled = false;
+        }
+    }
+</script>

@@ -45,7 +45,7 @@ public class ReservationServiceUnitTest {
 
         aveiroPorto1 = new Trip(aveiro, porto, 10, time1, 20);
         aveiroPorto1.setId(1L);
-        reservationRequest = new ReservationRequest(aveiroPorto1.getId(), "John Doe", "Rua do Almada", "912345678", "4000-069", "1234567890123456", "12", "2024", "123", "John Doe");
+        reservationRequest = new ReservationRequest(aveiroPorto1.getId(), "John Doe", "Rua do Almada", "912345678", "4000-069", "1234567890123456", "12", "2024", "123", "John Doe", 2);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ReservationServiceUnitTest {
 
         reservationService.createReservation(reservationRequest);
 
-        assertThat(aveiroPorto1.getSeats()).isEqualTo(19);
+        assertThat(aveiroPorto1.getSeats()).isEqualTo(18);
 
         Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findById(Mockito.anyLong());
         Mockito.verify(reservationRepository, VerificationModeFactory.times(1)).save(Mockito.any(Reservation.class));

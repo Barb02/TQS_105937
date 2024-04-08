@@ -54,6 +54,9 @@ public class Reservation {
     @Column
     private ReservationStatus status;
 
+    @Column
+    private int numberOfTickets;
+
     public Reservation() {
     }
 
@@ -68,6 +71,7 @@ public class Reservation {
         this.cardCvv = reservationRequest.getCardCvv();
         this.cardHolderName = reservationRequest.getCardHolderName();
         this.status = ReservationStatus.CONFIRMED;
+        this.numberOfTickets = reservationRequest.getNumberOfTickets();
     }
 
     public UUID getId() {
@@ -164,6 +168,14 @@ public class Reservation {
 
     public void setStatus(ReservationStatus status) {
         this.status = status;
+    }
+
+    public int getNumberOfTickets() {
+        return numberOfTickets;
+    }
+
+    public void setNumberOfTickets(int numberOfTickets) {
+        this.numberOfTickets = numberOfTickets;
     }
     
 }
