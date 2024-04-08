@@ -55,9 +55,22 @@ public class ReservationControllerT {
 
     @GetMapping("/reservation-status")
     public String getReservationStatusPage(@RequestParam String token, Model model){
-        UUID reservationId = UUID.fromString(token);
-        model.addAttribute("reservation", reservationService.getReservationById(reservationId));
-        return "reservation-status";
+        UUID reservationId;
+        try{
+            reservationId = UUID.fromString(token);
+        }
+        catch(Exception e){
+            return "redirect:/token-error";
+        }
+
+        Reservation reservation = reservationService.getReservationById(reservationId);
+        if (reservation == null){
+            return "redirect:/token-error";
+        }
+        else{
+            model.addAttribute("reservation", reservation);
+            return "reservation-status";
+        }
     }
     
 }

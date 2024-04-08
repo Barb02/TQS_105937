@@ -14,7 +14,9 @@
             <form th:action="@{/reservation-status}" method="get">
                 <input type="text" id="token" name="token" required>
                 <button type="submit">Check reservation status</button>
-            </form>                                             
+            </form>
+            <br>
+            <span th:if="${errorToken}" th:text="${errorToken}" style="color: rgb(214, 3, 3);"></span>                                             
         </div>
         <br>
         <p>Choose origin city:</p>

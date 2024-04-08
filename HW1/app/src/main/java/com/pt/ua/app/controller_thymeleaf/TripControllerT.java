@@ -35,6 +35,15 @@ public class TripControllerT {
         return "index";
     }
 
+    @GetMapping("/token-error")
+    public String getCitiesTokenError(Model model){
+        model.addAttribute("cityForm", new CityForm());
+        model.addAttribute("origins", tripService.getAllCities());
+        model.addAttribute("tripSearch", new TripSearch());
+        model.addAttribute("errorToken", "Invalid token!");
+        return "index";
+    }
+
     @PostMapping("/")
     public String submitForm(@ModelAttribute("cityForm") CityForm cityForm, Model model) {
         City selectedOrigin = cityForm.getSelectedOrigin();

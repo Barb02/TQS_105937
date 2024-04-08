@@ -36,6 +36,6 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     public Reservation getReservationById(UUID reservationId){
-        return reservationRepository.findById(reservationId).get();
+        return reservationRepository.findById(reservationId).orElse(null);
     }
 }
