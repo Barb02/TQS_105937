@@ -1,9 +1,9 @@
 <div>
     <a href="/">Home</a>
     <h1>BusTrip</h1>
-    <h2>Reservation status</h2>
+    <h2 id="reservationStatus">Reservation status</h2>
     <span><b>Use this code to check your reservation status whenever you want:</b></span>
-    <span th:text="${reservation.id}"></span>
+    <span id="reservationToken" th:text="${reservation.token}"></span>
     <br>
     <br>
     <span>Reservation status:</span>

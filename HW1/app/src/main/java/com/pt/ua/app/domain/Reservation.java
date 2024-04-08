@@ -7,6 +7,7 @@ import com.pt.ua.app.dto.ReservationRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
@@ -17,8 +18,11 @@ import jakarta.persistence.ManyToOne;
 public class Reservation {
     
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private UUID token;
 
     @ManyToOne
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
@@ -61,6 +65,7 @@ public class Reservation {
     }
 
     public Reservation(ReservationRequest reservationRequest) {
+        this.token = UUID.randomUUID();
         this.name = reservationRequest.getName();
         this.address = reservationRequest.getAddress();
         this.phone = reservationRequest.getPhone();
@@ -74,16 +79,24 @@ public class Reservation {
         this.numberOfTickets = reservationRequest.getNumberOfTickets();
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public Trip getTrip() {
         return trip;
+    }
+
+    public UUID getToken() {
+        return token;
+    }
+
+    public void setToken(UUID token) {
+        this.token = token;
     }
 
     public void setTrip(Trip trip) {

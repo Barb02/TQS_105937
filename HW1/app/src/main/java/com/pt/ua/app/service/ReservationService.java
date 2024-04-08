@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface ReservationService {
     public Reservation createReservation(ReservationRequest reservation);
-    public Reservation getReservationById(UUID reservationId);
+    public Reservation getReservationByToken(UUID token);
 }

@@ -54,8 +54,8 @@ public class ReservationController {
                     content = {@Content(mediaType = "application/json",schema = @Schema(implementation = Reservation.class))}),
             @ApiResponse(responseCode = "404", description = "Reservation not found", content = @Content)})
     @GetMapping("reservations/{reservationId}")
-    public Reservation getReservationById(@PathVariable UUID reservationId){
-        Reservation reservation = reservationService.getReservationById(reservationId);
+    public Reservation getReservationById(@PathVariable UUID tokenUUID){
+        Reservation reservation = reservationService.getReservationByToken(tokenUUID);
         if (reservation != null)
             return reservation;
         else{

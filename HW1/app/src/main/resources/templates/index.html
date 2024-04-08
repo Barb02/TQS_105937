@@ -13,10 +13,10 @@
             <p>Enter your reservation code:</p>
             <form th:action="@{/reservation-status}" method="get">
                 <input type="text" id="token" name="token" required>
-                <button type="submit">Check reservation status</button>
+                <button id="tokenSubmit" type="submit">Check reservation status</button>
             </form>
             <br>
-            <span th:if="${errorToken}" th:text="${errorToken}" style="color: rgb(214, 3, 3);"></span>                                             
+            <span id="errorToken" th:if="${errorToken}" th:text="${errorToken}" style="color: rgb(214, 3, 3);"></span>                                             
         </div>
         <br>
         <p>Choose origin city:</p>
@@ -53,7 +53,7 @@
                     <option th:value="'GBP'" th:text="'GBP'"></option>
                     <option th:value="'BRL'" th:text="'BRL'"></option>
                 </select>
-                <button type="submit">Search</button>
+                <button id="submitTripSearch" type="submit">Search</button>
             </form>
         </div>
 
@@ -71,7 +71,7 @@
             <span th:text="${trip.seats}"></span>
             <span style="color: rgb(79, 117, 8); font-weight: bold;"><u>Price:</u></span>
             <span style="color: rgb(79, 117, 8); font-weight: bold;" th:text="${#numbers.formatDecimal(trip.price, 1, 2)}"></span>
-            <a th:href="@{'/trips/' + ${trip.id} + '/reservations?currency=' + ${tripSearch.selectedCurrency}}">Click here to book this trip.</a>
+            <a th:href="@{'/trips/' + ${trip.id} + '/reservations?currency=' + ${tripSearch.selectedCurrency}}">Click here to book this trip</a>
             <br>
         </div>
     </div>

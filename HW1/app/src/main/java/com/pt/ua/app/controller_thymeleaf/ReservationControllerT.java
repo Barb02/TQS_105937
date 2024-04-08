@@ -2,6 +2,8 @@ package com.pt.ua.app.controller_thymeleaf;
 
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ public class ReservationControllerT {
     
     private final ReservationService reservationService;
     private final TripService tripService;
+
+    private static final Logger log = LoggerFactory.getLogger(ReservationControllerT.class);
 
     @Autowired
     public ReservationControllerT(ReservationService reservationService, TripService tripService) {
@@ -50,21 +54,23 @@ public class ReservationControllerT {
             model.addAttribute("error", "Reservation data is not valid");
             return "reservation";
         }
-        return "redirect:/reservation-status?token=" + reservationSaved.getId();
+        return "redirect:/reservation-status?token=" + reservationSaved.getToken();
     }
 
     @GetMapping("/reservation-status")
     public String getReservationStatusPage(@RequestParam String token, Model model){
-        UUID reservationId;
+        UUID tokenUUID;
         try{
-            reservationId = UUID.fromString(token);
+            tokenUUID = UUID.fromString(token);
         }
         catch(Exception e){
+            log.info("Couldn't convert token to UUID");
             return "redirect:/token-error";
         }
 
-        Reservation reservation = reservationService.getReservationById(reservationId);
+        Reservation reservation = reservationService.getReservationByToken(tokenUUID);
         if (reservation == null){
+            log.info("Couldn't find reservation");
             return "redirect:/token-error";
         }
         else{

@@ -35,7 +35,7 @@ public class ReservationServiceImpl implements ReservationService{
     }
 
     @Override
-    public Reservation getReservationById(UUID reservationId){
-        return reservationRepository.findById(reservationId).orElse(null);
+    public Reservation getReservationByToken(UUID token){
+        return reservationRepository.findByToken(token);
     }
 }

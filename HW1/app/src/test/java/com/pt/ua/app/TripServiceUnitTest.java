@@ -75,7 +75,7 @@ public class TripServiceUnitTest {
         assertThat(found.get(1).getPrice()).isEqualTo(11*1.0841752568);
         assertThat(found.get(1).getDateTime()).isEqualTo(LocalDateTime.of(2024, 04, 05, 11, 00));
 
-        Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class TripServiceUnitTest {
         assertThat(found.get(1).getPrice()).isEqualTo(11);
         assertThat(found.get(1).getDateTime()).isEqualTo(LocalDateTime.of(2024, 04, 05, 11, 00));
 
-        Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
     }
 
 }

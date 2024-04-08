@@ -61,7 +61,7 @@
         var numberOfTickets = document.getElementById("numberOfTickets").value;
         var seats = document.getElementById("numberOfSeats").value;
         var submitButton = document.getElementById("submitButton");
-        if (numberOfTickets > seats) {
+        if (parseInt(numberOfTickets,10) > parseInt(seats,10)) {
             submitButton.disabled = true;
             alert("There are not enough seats available for this trip. Please choose a smaller number of tickets.");
         }
