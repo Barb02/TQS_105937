@@ -41,7 +41,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<Trip> getTrips(City origin, City destination, LocalDateTime startDate, LocalDateTime endDate, String currency) throws IOException, InterruptedException{
-        List<Trip> trips = tripRepository.findByCity1AndCity2AndDateTimeBetween(origin, destination, startDate, endDate);
+        List<Trip> trips = tripRepository.findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(origin, destination, startDate, endDate, 0);
         if(! currency.equals("EUR")){
             double currentExchangeRate = exchangeService.getExchangeRate(currency);
             for(Trip trip : trips){

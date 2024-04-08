@@ -33,6 +33,7 @@ public class TripRepositoryTest {
     private Trip aveiroPorto1;
     private Trip aveiroPorto2;
     private Trip aveiroLisboa;
+    private Trip portoLisboa;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -47,6 +48,7 @@ public class TripRepositoryTest {
         aveiroPorto1 = new Trip(aveiro, porto, 10, time1,20);
         aveiroPorto2 = new Trip(aveiro, porto, 10, time2, 20);
         aveiroLisboa = new Trip(aveiro, lisboa, 15, time3, 25);
+        portoLisboa = new Trip(porto, lisboa, 15, time2, 0);
 
         entityManager.persist(aveiro);
         entityManager.persist(porto);
@@ -54,6 +56,7 @@ public class TripRepositoryTest {
         entityManager.persist(aveiroPorto1);
         entityManager.persist(aveiroPorto2);
         entityManager.persist(aveiroLisboa);
+        entityManager.persist(portoLisboa);
 
         entityManager.flush();
     }
@@ -75,7 +78,7 @@ public class TripRepositoryTest {
     void whenFindTripsForCitiesAndDate_thenReturnValidTrips(){
         LocalDateTime time1 = LocalDateTime.of(2024, 04, 05, 10, 00);
         LocalDateTime time2 = LocalDateTime.of(2024, 04, 05, 11, 00);
-        List<Trip> response = tripRepository.findByCity1AndCity2AndDateTimeBetween(aveiro,porto,time1,time2);
+        List<Trip> response = tripRepository.findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(aveiro,porto,time1,time2,0);
         List<Trip> validTrips = Arrays.asList(aveiroPorto1, aveiroPorto2);
         assertThat(response).isEqualTo(validTrips);
     }
@@ -84,8 +87,16 @@ public class TripRepositoryTest {
     void whenFindTripsForCitiesAndDate_thenReturnValidTrips2(){
         LocalDateTime time1 = LocalDateTime.of(2024, 04, 05, 9, 00);
         LocalDateTime time2 = LocalDateTime.of(2024, 04, 05, 10, 30);
-        List<Trip> response = tripRepository.findByCity1AndCity2AndDateTimeBetween(aveiro,porto,time1,time2);
+        List<Trip> response = tripRepository.findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(aveiro,porto,time1,time2,0);
         List<Trip> validTrips = Arrays.asList(aveiroPorto1);
         assertThat(response).isEqualTo(validTrips);
+    }
+
+    @Test
+    void givenFullTrips_whenFindTrips_thenReturnNoTrips(){
+        LocalDateTime time1 = LocalDateTime.of(2024, 04, 05, 10, 00);
+        LocalDateTime time2 = LocalDateTime.of(2024, 04, 05, 12, 00);
+        List<Trip> response = tripRepository.findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(porto,lisboa,time1,time2,0);
+        assertThat(response).isEqualTo(new ArrayList<>());
     }
 }

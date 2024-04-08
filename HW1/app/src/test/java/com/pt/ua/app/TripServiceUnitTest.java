@@ -56,7 +56,7 @@ public class TripServiceUnitTest {
 
     @Test
     void givenTrips_whenGetTrips_thenReturnTrips_NotEUR() throws Exception{
-        Mockito.when(tripRepository.findByCity1AndCity2AndDateTimeBetween(aveiro, porto, LocalDateTime.of(2024, 04, 05, 00, 00), LocalDateTime.of(2024, 04, 05, 23, 59)))
+        Mockito.when(tripRepository.findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(aveiro, porto, LocalDateTime.of(2024, 04, 05, 00, 00), LocalDateTime.of(2024, 04, 05, 23, 59),0))
                 .thenReturn(Arrays.asList(aveiroPorto1, aveiroPorto2));
 
         Mockito.when(exchangeService.getExchangeRate("USD")).thenReturn(1.0841752568);
@@ -75,12 +75,12 @@ public class TripServiceUnitTest {
         assertThat(found.get(1).getPrice()).isEqualTo(11*1.0841752568);
         assertThat(found.get(1).getDateTime()).isEqualTo(LocalDateTime.of(2024, 04, 05, 11, 00));
 
-        Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findByCity1AndCity2AndDateTimeBetween(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
     }
 
     @Test
     void givenTrips_whenGetTrips_thenReturnTrips_EUR() throws Exception{
-        Mockito.when(tripRepository.findByCity1AndCity2AndDateTimeBetween(aveiro, porto, LocalDateTime.of(2024, 04, 05, 00, 00), LocalDateTime.of(2024, 04, 05, 23, 59)))
+        Mockito.when(tripRepository.findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(aveiro, porto, LocalDateTime.of(2024, 04, 05, 00, 00), LocalDateTime.of(2024, 04, 05, 23, 59),0))
                 .thenReturn(Arrays.asList(aveiroPorto1, aveiroPorto2));
 
         List<Trip> found = service.getTrips(aveiro, porto, LocalDateTime.of(2024, 04, 05, 00, 00), LocalDateTime.of(2024, 04, 05, 23, 59), "EUR");
@@ -97,7 +97,7 @@ public class TripServiceUnitTest {
         assertThat(found.get(1).getPrice()).isEqualTo(11);
         assertThat(found.get(1).getDateTime()).isEqualTo(LocalDateTime.of(2024, 04, 05, 11, 00));
 
-        Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findByCity1AndCity2AndDateTimeBetween(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.verify(tripRepository, VerificationModeFactory.times(1)).findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
     }
 
 }

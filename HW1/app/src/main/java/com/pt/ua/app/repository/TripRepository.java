@@ -16,5 +16,5 @@ public interface TripRepository extends JpaRepository<Trip, Long>{
     @Query("SELECT t.city2 FROM Trip t WHERE t.city1 = :origin")
     List<City> findDestinationCities(@Param("origin") City origin);
 
-    List<Trip> findByCity1AndCity2AndDateTimeBetween(City origin, City destination, LocalDateTime startDate, LocalDateTime endDate);
+    List<Trip> findByCity1AndCity2AndDateTimeBetweenAndSeatsGreaterThan(City origin, City destination, LocalDateTime startDate, LocalDateTime endDate, int seats);
 }

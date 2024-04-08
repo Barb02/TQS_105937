@@ -65,8 +65,10 @@
             <span th:text="${trip.city2.name}"></span>
             <span><u>Date and time:</u></span>
             <span th:text="${trip.dateTime}"></span>
-            <span><u>Price:</u></span>
-            <span th:text="${#numbers.formatDecimal(trip.price, 1, 2)}"></span>
+            <span><u>Seats available:</u></span>
+            <span th:text="${trip.seats}"></span>
+            <span style="color: rgb(79, 117, 8); font-weight: bold;"><u>Price:</u></span>
+            <span style="color: rgb(79, 117, 8); font-weight: bold;" th:text="${#numbers.formatDecimal(trip.price, 1, 2)}"></span>
             <a th:href="@{'/trips/' + ${trip.id} + '/reservations?currency=' + ${tripSearch.selectedCurrency}}">Click here to book this trip.</a>
             <br>
         </div>

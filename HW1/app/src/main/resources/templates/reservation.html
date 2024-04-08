@@ -3,7 +3,7 @@
     <h1>BusTrip</h1>
     <h3>Fill the form with the necessary information to complete your booking.</h3>
     <h4>Trip details:</h4>
-    
+
     <span th:if="${error}" th:text="${error}"></span>
 
     <div th:if="${trip}">
@@ -17,7 +17,7 @@
         <span th:text="${trip.dateTime}"></span>
         <br>
         <span><u>Price:</u></span>
-        <span th:text="${trip.price}"></span>
+        <span th:text="${#numbers.formatDecimal(trip.price, 1, 2)}"></span>
     </div>
 </div>
 

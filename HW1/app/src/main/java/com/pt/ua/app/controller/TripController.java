@@ -71,7 +71,8 @@ public class TripController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Trip.class)))}),
-            @ApiResponse(responseCode = "404", description = "Trips not found", content = @Content)})
+            @ApiResponse(responseCode = "404", description = "Trips not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error fetching exchange rates from external service", content = @Content)})
     @GetMapping("trips")
     public List<Trip> getTrips(@RequestParam Long originId, @RequestParam Long destinationId, @RequestParam String startDate, @RequestParam String endDate, @RequestParam String currency){
         City origin = tripService.getCityById(originId);
@@ -92,6 +93,26 @@ public class TripController {
         }   
     }
 
-    //TODO: Get trip by id
+    @Operation(summary = "Get trip by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Trip.class))}),
+            @ApiResponse(responseCode = "404", description = "Trips not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error fetching exchange rates from external service", content = @Content)})
+    @GetMapping("trips/{id}")
+    public Trip getTrip(@PathVariable Long id, @RequestParam String currency){
+        Trip trip = null;
+        try{
+            trip = tripService.getTripById(id, currency);
+        }
+        catch(IOException | InterruptedException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching exchange rates from external service");
+        }
+        if(trip != null)
+            return trip;
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trips not found");
+        }  
+    }
 
 }

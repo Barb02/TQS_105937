@@ -9,6 +9,7 @@ import com.pt.ua.app.repository.TripRepository;
 import com.pt.ua.app.domain.Reservation;
 import com.pt.ua.app.dto.ReservationRequest;
 import com.pt.ua.app.service.ReservationService;
+import com.pt.ua.app.domain.Trip;
 
 @Service
 public class ReservationServiceImpl implements ReservationService{
@@ -24,7 +25,9 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     public Reservation createReservation(ReservationRequest reservationRequest){
         Reservation reservation = new Reservation(reservationRequest);
-        reservation.setTrip(tripRepository.findById(reservationRequest.getTripId()).get());
+        Trip trip = tripRepository.findById(reservationRequest.getTripId()).get();
+        trip.setSeats(trip.getSeats() - 1);
+        reservation.setTrip(trip);
         return reservationRepository.save(reservation);
     }
 
