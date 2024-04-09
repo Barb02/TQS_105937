@@ -20,6 +20,7 @@ import com.pt.ua.app.domain.City;
 import com.pt.ua.app.domain.Trip;
 
 import static org.hamcrest.Matchers.*;
+
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -56,7 +57,7 @@ public class TripTestIT {
 
     private City aveiro, aveiroSaved;
     private City porto, portoSaved;
-    private City lisboa, lisboaSaved;
+    private City lisboa;
     private Trip aveiroPorto1;
     private Trip aveiroPorto2;
     private Trip aveiroLisboa;
@@ -77,7 +78,7 @@ public class TripTestIT {
 
         aveiroSaved = cityRepository.save(aveiro);
         portoSaved = cityRepository.save(porto);
-        lisboaSaved = cityRepository.save(lisboa);
+        cityRepository.save(lisboa);
         tripRepository.save(aveiroPorto1);
         tripRepository.save(aveiroPorto2);
         tripRepository.save(aveiroLisboa);
@@ -110,6 +111,139 @@ public class TripTestIT {
             .body("seats", contains(20, 20))
             .body("price[0]", both(not(equalTo(10.0f))).and(greaterThan(0.0f))) 
             .body("price[1]", both(not(equalTo(11.0f))).and(greaterThan(0.0f)));
+    }
+
+    @Test
+    void givenTrips_whenGetTrips_thenReturnTrips_EUR() {
+        String endpoint = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("127.0.0.1")
+                .port(randomServerPort)
+                .pathSegment("api", "v1", "trips")
+                .queryParam("originId", aveiroSaved.getId()) 
+                .queryParam("destinationId", portoSaved.getId())
+                .queryParam("startDate", "2024-04-05T00:00") 
+                .queryParam("endDate", "2024-04-05T23:59")
+                .queryParam("currency", "EUR")
+                .build()
+                .toUriString();
+
+        RestAssured
+        .given()
+            .when()
+            .get(endpoint)
+        .then()
+            .statusCode(200)
+            .body("city1.name", contains("Aveiro", "Aveiro"))
+            .body("city2.name", contains("Porto", "Porto"))
+            .body("dateTime", contains("2024-04-05T10:00:00", "2024-04-05T11:00:00"))
+            .body("seats", contains(20, 20))
+            .body("price", contains(10.0f, 11.0f));   
+    }
+
+    @Test
+    void givenSomeCities_whenGetCities_thenReturnAllCities() throws Exception {
+
+        String endpoint = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("127.0.0.1")
+                .port(randomServerPort)
+                .pathSegment("api", "v1", "cities")
+                .build()
+                .toUriString();
+
+        RestAssured
+        .given()
+        .when()
+            .get(endpoint)
+        .then()
+            .statusCode(200)
+            .body("name", contains("Aveiro", "Porto", "Lisboa"));
+    }
+
+    @Test
+    void givenCityWithAvailableDestination_whenGetDestinationCities_returnDestinationCities() throws Exception {
+
+        String endpoint = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("127.0.0.1")
+                .port(randomServerPort)
+                .pathSegment("api", "v1", "cities", "1", "destinations")
+                .build()
+                .toUriString();
+
+        RestAssured
+        .given()
+        .when()
+            .get(endpoint)
+        .then()
+            .statusCode(200)
+            .body("name", contains("Porto", "Lisboa"));
+    }
+
+    @Test
+    void givenCityWithoutAvailableDestinations_whenGetDestinationCities_returnEmptyList() throws Exception {
+
+        String endpoint = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("127.0.0.1")
+                .port(randomServerPort)
+                .pathSegment("api", "v1", "cities", "3", "destinations")
+                .build()
+                .toUriString();
+
+        RestAssured
+        .given()
+        .when()
+            .get(endpoint)
+        .then()
+            .statusCode(200)
+            .body("", hasSize(0));
+    }
+
+    @Test
+    void givenTrip_whenGetTrip_thenReturnTrip() throws Exception {
+
+        String endpoint = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("127.0.0.1")
+                .port(randomServerPort)
+                .pathSegment("api", "v1", "trips", "3")
+                .queryParam("currency", "EUR")
+                .build()
+                .toUriString();
+
+        RestAssured
+        .given()
+        .when()
+            .get(endpoint)
+        .then()
+            .statusCode(200)
+            .body("city1.name", is("Aveiro"))
+            .body("city2.name", is("Lisboa"))
+            .body("price", is(15.0f))
+            .body("dateTime", is("2024-04-05T12:00:00"))
+            .body("seats", is(25));
+    }
+
+    @Test
+    void givenTrip_whenGetInvalidId_thenReturn404() throws Exception {
+
+        String endpoint = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("127.0.0.1")
+                .port(randomServerPort)
+                .pathSegment("api", "v1", "trips", "99")
+                .queryParam("currency", "EUR")
+                .build()
+                .toUriString();
+
+        RestAssured
+        .given()
+        .when()
+            .get(endpoint)
+        .then()
+            .statusCode(404);
     }
 
 }

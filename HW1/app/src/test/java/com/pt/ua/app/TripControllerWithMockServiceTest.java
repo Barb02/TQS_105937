@@ -20,6 +20,7 @@ import com.pt.ua.app.domain.City;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -138,5 +139,58 @@ public class TripControllerWithMockServiceTest {
 
         verify(service, times(1)).getTrips(aveiro, porto, LocalDateTime.of(2024, 04, 05, 00, 00), LocalDateTime.of(2024, 04, 05, 23, 59), "EUR");
         verify(service, times(2)).getCityById(Mockito.any());
+    }
+
+    @Test
+    void givenTrip_whenGetTrip_thenReturnTrip() throws Exception {
+
+        when(service.getTripById(3L, "EUR")).thenReturn(aveiroLisboa);
+
+        RestAssuredMockMvc
+        .given()
+            .mockMvc(mvc)
+        .when()
+            .get("api/v1/trips/3?currency=EUR")
+        .then()
+            .statusCode(200)
+            .body("city1.name", is("Aveiro"))
+            .body("city2.name", is("Lisboa"))
+            .body("price", is(15.0f))
+            .body("dateTime", is("2024-04-05T12:00:00"))
+            .body("seats", is(25));
+
+        verify(service, times(1)).getTripById(Mockito.any(), Mockito.any());
+    }
+
+    @Test
+    void givenTrip_whenGetInvalidId_thenReturn404() throws Exception {
+
+        when(service.getTripById(99L, "EUR")).thenReturn(null);
+
+        RestAssuredMockMvc
+        .given()
+            .mockMvc(mvc)
+        .when()
+            .get("api/v1/trips/99?currency=EUR")
+        .then()
+            .statusCode(404);
+
+        verify(service, times(1)).getTripById(Mockito.any(), Mockito.any());
+    }
+
+    @Test
+    void givenTrip_whenGetThrowsException_thenReturn500() throws Exception {
+
+        when(service.getTripById(10L, "EUR")).thenThrow(new IOException());
+
+        RestAssuredMockMvc
+        .given()
+            .mockMvc(mvc)
+        .when()
+            .get("api/v1/trips/10?currency=EUR")
+        .then()
+            .statusCode(500);
+
+        verify(service, times(1)).getTripById(Mockito.any(), Mockito.any());
     }
 } 

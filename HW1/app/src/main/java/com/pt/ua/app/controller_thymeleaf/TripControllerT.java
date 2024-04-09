@@ -24,6 +24,8 @@ public class TripControllerT {
     private static final Logger log = LoggerFactory.getLogger(TripControllerT.class);
 
     private final TripService tripService;
+    private final String indexPage = "index";
+    private final String originsAttribute = "origins";
 
     @Autowired
     public TripControllerT(TripService tripService) {
@@ -36,9 +38,9 @@ public class TripControllerT {
         log.info("Getting index page with origin cities");
 
         model.addAttribute("cityForm", new CityForm());
-        model.addAttribute("origins", tripService.getAllCities());
+        model.addAttribute(originsAttribute, tripService.getAllCities());
         model.addAttribute("tripSearch", new TripSearch());
-        return "index";
+        return indexPage;
     }
 
     @GetMapping("/token-error")
@@ -47,10 +49,10 @@ public class TripControllerT {
         log.info("Getting index page with token error message");
 
         model.addAttribute("cityForm", new CityForm());
-        model.addAttribute("origins", tripService.getAllCities());
+        model.addAttribute(originsAttribute, tripService.getAllCities());
         model.addAttribute("tripSearch", new TripSearch());
         model.addAttribute("errorToken", "Invalid token!");
-        return "index";
+        return indexPage;
     }
 
     @PostMapping("/")
@@ -60,18 +62,18 @@ public class TripControllerT {
 
         City selectedOrigin = cityForm.getSelectedOrigin();
         List<City> destinations = tripService.getDestinationCities(selectedOrigin);
-        model.addAttribute("origins", tripService.getAllCities());
+        model.addAttribute(originsAttribute, tripService.getAllCities());
         model.addAttribute("destinations", destinations);
-        return "index";
+        return indexPage;
     }
 
     @PostMapping("/trips")
     public String getTrips(@ModelAttribute("cityForm") CityForm cityForm, TripSearch search, Model model){
-
-        log.info("Getting trips for origin city: " + cityForm.getSelectedOrigin().getName() + " and destination city: " + search.getCity2Id() + " from " + search.getStartDateTime() + " to " + search.getEndDateTime() + " in currency: " + search.getSelectedCurrency());
-
+        
         City origin = tripService.getCityById(search.getCity1Id());
         City destination = tripService.getCityById(search.getCity2Id());
+
+        log.info("Getting trips for origin city: " + origin.getName() + " and destination city: " + destination.getName() + " from " + search.getStartDateTime() + " to " + search.getEndDateTime() + " in currency: " + search.getSelectedCurrency());
         
         List<Trip> trips;
         try{
@@ -79,17 +81,17 @@ public class TripControllerT {
         }
         catch(IOException | InterruptedException e){
             model.addAttribute("error", "Error fetching exchange rates from external service");
-            return "index";
+            return indexPage;
         }
         
         model.addAttribute("trips", trips);
         
-        model.addAttribute("origins", tripService.getAllCities());
+        model.addAttribute(originsAttribute, tripService.getAllCities());
 
         List<City> destinations = tripService.getDestinationCities(origin);
         model.addAttribute("destinations", destinations);
 
-        return "index";
+        return indexPage;
     }
 
 

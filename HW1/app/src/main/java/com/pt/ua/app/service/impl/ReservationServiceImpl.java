@@ -29,7 +29,12 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     public Reservation createReservation(ReservationRequest reservationRequest){
         Reservation reservation = new Reservation(reservationRequest);
-        Trip trip = tripRepository.findById(reservationRequest.getTripId()).get();
+        Trip trip = tripRepository.findById(reservationRequest.getTripId()).orElse(null);
+
+        if(trip == null){
+            log.error("Trip not found: " + reservationRequest.getTripId());
+            return null;
+        }
 
         if(trip.getSeats() - reservationRequest.getNumberOfTickets() < 0){
             log.error("Not enough seats available for trip: " + reservationRequest.getTripId());

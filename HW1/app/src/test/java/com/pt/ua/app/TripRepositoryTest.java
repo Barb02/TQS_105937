@@ -69,7 +69,7 @@ public class TripRepositoryTest {
     }
 
     @Test
-    void givenCityWithotAvailableDestinations_whenFindDestinationCities_thenReturnDestinationCities(){
+    void givenCityWithoutAvailableDestinations_whenFindDestinationCities_thenReturnDestinationCities(){
         List<City> response = tripRepository.findDestinationCities(lisboa);
         assertThat(response).isEqualTo(new ArrayList<>());
     }

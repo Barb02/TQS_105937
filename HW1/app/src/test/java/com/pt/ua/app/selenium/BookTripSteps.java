@@ -64,7 +64,7 @@ public class BookTripSteps {
     
     @Then("the user should see a list of available trips with the link {string}")
     public void the_user_should_see_a_list_of_available_trips(String string) {
-        assertThat(driver.findElement(By.linkText(string)));
+        assertThat(driver.findElement(By.linkText(string))).isNotNull();
     }
 
     @When("the user clicks on the link {string}")
@@ -74,7 +74,7 @@ public class BookTripSteps {
 
     @Then("the user should be redirected to the reservation page")
     public void the_user_should_be_redirected_to_the_reservation_page() {
-        assertThat(driver.findElement(By.id("reservationForm")));
+        assertThat(driver.findElement(By.id("reservationForm"))).isNotNull();
     }
 
     @When("the user fills the form with valid values")
@@ -116,7 +116,7 @@ public class BookTripSteps {
     @Then("an alert should appear with an error message")
     public void an_alert_should_appear_with_an_error_message() {
         Alert alert = driver.switchTo().alert();
-        assertThat(alert);
+        assertThat(alert).isNotNull();
         alert.accept();
     }
 
@@ -133,7 +133,7 @@ public class BookTripSteps {
 
     @Then("the user should be redirected to the reservation status page")
     public void the_user_should_be_redirected_to_the_reservation_status_page() {
-        assertThat(driver.findElement(By.id("reservationStatus")));
+        assertThat(driver.findElement(By.id("reservationStatus"))).isNotNull();
         driver.close();
     }
 

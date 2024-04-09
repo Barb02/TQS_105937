@@ -127,7 +127,7 @@ public class TripController {
         if(trip != null)
             return trip;
         else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trips not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trip not found");
         }  
     }
 

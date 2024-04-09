@@ -24,6 +24,7 @@ public class ReservationControllerT {
     
     private final ReservationService reservationService;
     private final TripService tripService;
+    private final String reservationPage = "reservation";
 
     private static final Logger log = LoggerFactory.getLogger(ReservationControllerT.class);
 
@@ -44,13 +45,13 @@ public class ReservationControllerT {
         }
         catch(Exception e){
             model.addAttribute("error", "Error fetching trip details");
-            return "reservation";
+            return reservationPage;
         }
         model.addAttribute("trip", trip);
-        return "reservation";
+        return reservationPage;
     }
 
-    @PostMapping("/trips/{tripId}/reservations")
+    @PostMapping("/trips/reservations")
     public String createReservation(@ModelAttribute ReservationRequest reservationRequest, Model model){
 
         log.info("Creating reservation for trip: " + reservationRequest.getTripId());
@@ -58,7 +59,7 @@ public class ReservationControllerT {
         Reservation reservationSaved = reservationService.createReservation(reservationRequest);
         if(reservationSaved == null){
             model.addAttribute("error", "Reservation data is not valid");
-            return "reservation";
+            return reservationPage;
         }
         return "redirect:/reservation-status?token=" + reservationSaved.getToken();
     }

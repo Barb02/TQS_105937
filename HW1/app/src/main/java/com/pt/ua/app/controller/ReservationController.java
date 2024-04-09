@@ -60,7 +60,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {@Content(mediaType = "application/json",schema = @Schema(implementation = Reservation.class))}),
             @ApiResponse(responseCode = "404", description = "Reservation not found", content = @Content)})
-    @GetMapping("reservations/{reservationId}")
+    @GetMapping("reservations/{tokenUUID}")
     public Reservation getReservationById(@PathVariable UUID tokenUUID){
 
         log.info("Getting reservation by token " + tokenUUID);

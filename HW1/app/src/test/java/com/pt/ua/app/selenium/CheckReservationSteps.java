@@ -37,7 +37,7 @@ public class CheckReservationSteps {
 
     @Then("the user should be redirected to the corresponding reservation status page")
     public void the_user_should_be_redirected_to_the_corresponding_reservation_status_page() {
-        assertThat(driver.findElement(By.id("reservationStatus")));
+        assertThat(driver.findElement(By.id("reservationStatus"))).isNotNull();;
         driver.close();
     }
 

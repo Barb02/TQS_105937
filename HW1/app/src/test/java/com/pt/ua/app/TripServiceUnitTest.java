@@ -34,24 +34,19 @@ public class TripServiceUnitTest {
 
     private City aveiro;
     private City porto;
-    private City lisboa;
     private Trip aveiroPorto1;
     private Trip aveiroPorto2;
-    private Trip aveiroLisboa;
 
     @BeforeEach
     public void setUp() throws Exception {
         aveiro = new City("Aveiro");
         porto = new City("Porto");
-        lisboa = new City("Lisboa");
 
         LocalDateTime time1 = LocalDateTime.of(2024, 04, 05, 10, 00);
         LocalDateTime time2 = LocalDateTime.of(2024, 04, 05, 11, 00);
-        LocalDateTime time3 = LocalDateTime.of(2024, 04, 05, 12, 00);
 
         aveiroPorto1 = new Trip(aveiro, porto, 10, time1, 20);
         aveiroPorto2 = new Trip(aveiro, porto, 11, time2, 20);
-        aveiroLisboa = new Trip(aveiro, lisboa, 15, time3, 25);
     }
 
     @Test
