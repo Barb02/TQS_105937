@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,14 +43,17 @@ public class ReservationController {
             @ApiResponse(responseCode = "201", description = "Created",
                     content = {@Content(mediaType = "application/json",schema = @Schema(implementation = Reservation.class))}),
             @ApiResponse(responseCode = "400", description = "Reservation data is not valid", content = @Content)})
-    @PostMapping("reservations")
+    @PostMapping(value="reservations")
+    @ResponseStatus(code = HttpStatus.CREATED, reason = "Created")
     public Reservation createReservation(@RequestBody ReservationRequest reservationRequest){
 
         log.info("Creating reservation for trip: " + reservationRequest.getTripId());
         
         Reservation reservationSaved = reservationService.createReservation(reservationRequest);
-        if (reservationSaved != null)
+        if (reservationSaved != null){
+            System.out.println(reservationSaved.getName());
             return reservationSaved;
+        }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reservation data is not valid");
         }

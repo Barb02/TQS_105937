@@ -1,5 +1,6 @@
 package com.pt.ua.app;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -60,7 +61,13 @@ public class TripTestIT {
     private City lisboa;
     private Trip aveiroPorto1;
     private Trip aveiroPorto2;
-    private Trip aveiroLisboa;
+    private Trip aveiroLisboa, aveiroLisboaSaved;
+
+    @AfterEach
+    public void tearDown() {
+        tripRepository.deleteAll();
+        cityRepository.deleteAll();
+    }
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -81,7 +88,7 @@ public class TripTestIT {
         cityRepository.save(lisboa);
         tripRepository.save(aveiroPorto1);
         tripRepository.save(aveiroPorto2);
-        tripRepository.save(aveiroLisboa);
+        aveiroLisboaSaved = tripRepository.save(aveiroLisboa);
     }
 
     @Test
@@ -168,7 +175,7 @@ public class TripTestIT {
                 .scheme("http")
                 .host("127.0.0.1")
                 .port(randomServerPort)
-                .pathSegment("api", "v1", "cities", "1", "destinations")
+                .pathSegment("api", "v1", "cities", Long.toString(aveiroSaved.getId()), "destinations")
                 .build()
                 .toUriString();
 
@@ -208,7 +215,7 @@ public class TripTestIT {
                 .scheme("http")
                 .host("127.0.0.1")
                 .port(randomServerPort)
-                .pathSegment("api", "v1", "trips", "3")
+                .pathSegment("api", "v1", "trips", Long.toString(aveiroLisboaSaved.getId()))
                 .queryParam("currency", "EUR")
                 .build()
                 .toUriString();
