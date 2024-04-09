@@ -37,5 +37,6 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
           cd HW1/app
+          docker run --name mysql5tqs -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=tqsdemo -e MYSQL_USER=demo -e MYSQL_PASSWORD=demo -p 33000:3306 -d mysql/mysql-server:5.7
           mvn spring-boot:run &
           mvn -B verify jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=bustrip -Dsonar.projectName='bustrip' -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
