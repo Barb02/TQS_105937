@@ -11,11 +11,10 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.Alert;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BookTripSteps {
     
@@ -23,8 +22,10 @@ public class BookTripSteps {
 
     @Given("the user is at the website {string} to book a trip")
     public void setURL(String url){
+        FirefoxBinary binary = new FirefoxBinary();
         FirefoxOptions options = new FirefoxOptions();
-        options.addArguments("-headless");
+        binary.addCommandLineOptions("-headless");
+        options.setBinary(binary);
         driver = new FirefoxDriver(options);
         driver.get(url);
     }
