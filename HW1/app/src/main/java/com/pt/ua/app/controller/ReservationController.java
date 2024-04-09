@@ -51,7 +51,6 @@ public class ReservationController {
         
         Reservation reservationSaved = reservationService.createReservation(reservationRequest);
         if (reservationSaved != null){
-            System.out.println(reservationSaved.getName());
             return reservationSaved;
         }
         else{

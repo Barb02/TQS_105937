@@ -22,7 +22,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import com.pt.ua.app.controller.ReservationController;
 
 @WebMvcTest(ReservationController.class)
-public class ReservationControllerWithMockService {
+class ReservationControllerWithMockService {
     
     @Autowired
     private MockMvc mvc;  

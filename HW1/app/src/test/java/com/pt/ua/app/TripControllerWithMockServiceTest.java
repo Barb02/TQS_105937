@@ -27,7 +27,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import static org.hamcrest.Matchers.*;
 
 @WebMvcTest(TripController.class)
-public class TripControllerWithMockServiceTest {
+class TripControllerWithMockServiceTest {
     
     @Autowired
     private MockMvc mvc;  

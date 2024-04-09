@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.pt.ua.app.cache.ExchangeRateCache;
 
-public class CacheTest {
+class CacheTest {
 
     String usd;
     String gbp;

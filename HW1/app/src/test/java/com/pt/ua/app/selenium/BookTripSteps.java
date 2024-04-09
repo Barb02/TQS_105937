@@ -11,6 +11,7 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.Alert;
 
@@ -23,7 +24,9 @@ public class BookTripSteps {
     @Given("the user is at the website {string} to book a trip")
     public void setURL(String url){
         WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver();
+        FirefoxOptions options = new FirefoxOptions();
+        options.addArguments("-headless");
+        driver = new FirefoxDriver(options);
         driver.get(url);
     }
 

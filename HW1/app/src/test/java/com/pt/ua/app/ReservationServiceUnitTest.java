@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDateTime;
 
 @ExtendWith(MockitoExtension.class)
-public class ReservationServiceUnitTest {
+class ReservationServiceUnitTest {
     
     @Mock
     private ReservationRepository reservationRepository;

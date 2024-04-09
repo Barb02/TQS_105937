@@ -19,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class TripRepositoryTest {
+class TripRepositoryTest {
     
     @Autowired
     private TestEntityManager entityManager;
